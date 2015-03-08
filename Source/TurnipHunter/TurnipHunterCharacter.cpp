@@ -63,6 +63,8 @@ ATurnipHunterCharacter::ATurnipHunterCharacter(const FObjectInitializer& ObjectI
 	GetCharacterMovement()->MaxWalkSpeed = 600.0f;
 	GetCharacterMovement()->MaxFlySpeed = 600.0f;
 
+	SprintMultiplier = 1.5f;
+
 	// Lock character motion onto the XZ plane, so the character can't move in or out of the screen
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->SetPlaneConstraintNormal(FVector(0.0f, -1.0f, 0.0f));
@@ -101,6 +103,9 @@ void ATurnipHunterCharacter::SetupPlayerInputComponent(class UInputComponent* In
 	InputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 	InputComponent->BindAxis("MoveRight", this, &ATurnipHunterCharacter::MoveRight);
 
+	InputComponent->BindAction("Sprint", IE_Pressed, this, &ATurnipHunterCharacter::Sprint);
+	InputComponent->BindAction("Sprint", IE_Released, this, &ATurnipHunterCharacter::StopSprinting);
+
 	InputComponent->BindTouch(IE_Pressed, this, &ATurnipHunterCharacter::TouchStarted);
 	InputComponent->BindTouch(IE_Released, this, &ATurnipHunterCharacter::TouchStopped);
 }
@@ -125,6 +130,16 @@ void ATurnipHunterCharacter::MoveRight(float Value)
 
 	// Apply the input to the character motion
 	AddMovementInput(FVector(1.0f, 0.0f, 0.0f), Value);
+}
+
+void ATurnipHunterCharacter::Sprint()
+{
+	GetCharacterMovement()->MaxWalkSpeed *= SprintMultiplier;
+}
+
+void ATurnipHunterCharacter::StopSprinting()
+{
+	GetCharacterMovement()->MaxWalkSpeed /= SprintMultiplier;
 }
 
 void ATurnipHunterCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
