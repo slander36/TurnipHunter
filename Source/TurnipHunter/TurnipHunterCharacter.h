@@ -40,12 +40,15 @@ protected:
 	/** Called for side to side input */
 	void MoveRight(float Value);
 
+<<<<<<< HEAD
 	/** Called for sprinting */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation)
 		float SprintMultiplier;
 	void Sprint();
 	void StopSprinting();
 
+=======
+>>>>>>> origin/master
 	/** Handle touch inputs. */
 	void TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location);
 
